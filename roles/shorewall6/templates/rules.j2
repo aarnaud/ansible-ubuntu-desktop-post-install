@@ -1,0 +1,30 @@
+#
+# Shorewall version 4 - Rules File
+#
+# For information on the settings in this file, type "man shorewall-rules"
+#
+# The manpage is also online at
+# http://www.shorewall.net/manpages/shorewall-rules.html
+#
+######################################################################################################################################################################################################
+#ACTION		SOURCE		DEST		PROTO	DEST	SOURCE		ORIGINAL	RATE		USER/	MARK	CONNLIMIT	TIME		HEADERS		SWITCH		HELPER
+#											PORT	PORT(S)		DEST		LIMIT		GROUP
+?SECTION ALL
+?SECTION ESTABLISHED
+?SECTION RELATED
+?SECTION INVALID
+?SECTION UNTRACKED
+?SECTION NEW
+{% if shorewall6.externalPorts is defined %}
+{% if shorewall6.externalTCPAllowPorts is defined %}
+{% for port in shorewall6.externalTCPAllowPorts %}
+ACCEPT		net		$FW		tcp {{ port }}
+{% endfor %}
+{% endif %}
+{% if shorewall6.externalUDPAllowPorts is defined %}
+{% for port in shorewall6.externalUDPAllowPorts %}
+ACCEPT		net		$FW		tcp {{ port }}
+{% endfor %}
+{% endif %}
+{% endif %}
+ACCEPT		all		$FW		icmp

@@ -1,0 +1,6 @@
+---
+- hosts: tests
+  remote_user: root
+  roles:
+    - apt-proxy
+    - shorewall6

@@ -1,0 +1,5 @@
+---
+
+- name: Restart service shorewall
+  service: name=shorewall state=restarted enabled=yes
+  when: shorewall6.externalPorts is defined or shorewall6.internalPorts is defined

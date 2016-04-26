@@ -1,0 +1,24 @@
+
+#
+# Shorewall version 4 - Interfaces File
+#
+# For information about entries in this file, type "man shorewall-interfaces"
+#
+# The manpage is also online at
+# http://www.shorewall.net/manpages/shorewall-interfaces.html
+#
+###############################################################################
+?FORMAT 2
+###############################################################################
+#ZONE	INTERFACE	OPTIONS
+-		lo	 		ignore
+{% if shorewall.externalPorts is defined %}
+{% for externalPort in shorewall.externalPorts %}
+net		{{externalPort}}		routeback,optional
+{% endfor %}
+{% endif %}
+{% if shorewall.internalPorts is defined %}
+{% for internalPort in shorewall.internalPorts %}
+loc		{{internalPort}}		routeback,optional
+{% endfor %}
+{% endif %}

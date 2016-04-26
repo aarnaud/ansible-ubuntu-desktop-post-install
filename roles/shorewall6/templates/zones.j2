@@ -1,0 +1,18 @@
+#
+# Shorewall version 4 - Zones File
+#
+# For information about this file, type "man shorewall-zones"
+#
+# The manpage is also online at
+# http://www.shorewall.net/manpages/shorewall-zones.html
+#
+###############################################################################
+#ZONE	TYPE		OPTIONS		IN			OUT
+#								OPTIONS		OPTIONS
+fw		firewall
+{% if shorewall6.externalPorts is defined %}
+net		ipv6
+{% endif %}
+{% if shorewall6.internalPorts is defined %}
+loc		ipv6
+{% endif %}

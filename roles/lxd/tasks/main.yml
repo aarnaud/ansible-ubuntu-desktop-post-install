@@ -1,0 +1,42 @@
+---
+
+- name: Installing network tools
+  package: name={{item}}
+  with_items:
+    - bridge-utils
+    - rinetd
+
+- name: Installing LXD/LXC
+  package: name={{item}}
+  with_items:
+    - lxd
+    - lxd-client
+    - lxc2
+    - lxcfs
+    - cgmanager
+
+
+- name: Getting users on system
+  shell: "getent passwd | awk -F: '$3 >= 1000 && $3 <= 2000 { print $1 }'"
+  register: system_users
+
+- name: "Add lxd group to users"
+  user: name={{item}} groups=lxd append=yes
+  with_items: "{{ system_users.stdout_lines }}"
+  
+- name: "Configure lxd-bridge"
+  lineinfile: dest="/etc/default/lxd-bridge" regexp="{{ item.regexp }}" line="{{ item.line }}"
+  with_items:
+    - { regexp: "^USE_LXD_BRIDGE", line: "USE_LXD_BRIDGE=\"true\"" }
+    - { regexp: "^LXD_IPV4_ADDR=", line: "LXD_IPV4_ADDR=\"{{ LXD_IPV4_ADDR }}\"" }
+    - { regexp: "^LXD_IPV4_NETMASK=", line: "LXD_IPV4_NETMASK=\"{{ LXD_IPV4_NETMASK }}\"" }
+    - { regexp: "^LXD_IPV4_NETWORK=", line: "LXD_IPV4_NETWORK=\"{{ LXD_IPV4_NETWORK }}\"" }
+    - { regexp: "^LXD_IPV4_DHCP_RANGE=", line: "LXD_IPV4_DHCP_RANGE=\"{{ LXD_IPV4_DHCP_RANGE }}\"" }
+    - { regexp: "^LXD_IPV4_DHCP_MAX=", line: "LXD_IPV4_DHCP_MAX=\"{{ LXD_IPV4_DHCP_MAX }}\"" }
+    - { regexp: "^LXD_IPV6_PROXY=", line: "LXD_IPV6_PROXY=\"false\"" }
+  register: lxd_bridge_config
+
+# force restart after change, don't wait notify
+- name: Restart lxd-bridge
+  service: name=lxd-bridge state=restarted
+  when: lxd_bridge_config|changed

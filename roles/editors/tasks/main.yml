@@ -1,0 +1,7 @@
+---
+
+- name: Add webupd8team sublime-text-3 PPA
+  apt_repository: repo='ppa:webupd8team/sublime-text-3'
+
+- name: Installing sublime-text
+  package: name='sublime-text-installer'

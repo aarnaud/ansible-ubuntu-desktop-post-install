@@ -1,0 +1,7 @@
+---
+
+- name: Installing office tools
+  package: name={{item}}
+  with_items:
+    - pdfmod
+    - xsane

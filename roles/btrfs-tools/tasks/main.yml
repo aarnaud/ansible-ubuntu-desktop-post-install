@@ -1,0 +1,16 @@
+---
+
+- name: Installing btrfs tools
+  package: name={{item}}
+  with_items:
+    - btrfs-tools
+    - apt-btrfs-snapshot
+    - snapper
+
+
+- stat: path=/sbin/btrfs
+  register: sbin_btrfs_stat
+
+- name: Link btrfs tools for auto snapshot with apt
+  file: src=/bin/btrfs dest=/sbin/btrfs state=link
+  when: not sbin_btrfs_stat.stat.exists

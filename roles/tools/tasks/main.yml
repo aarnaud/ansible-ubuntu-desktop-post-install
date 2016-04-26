@@ -1,0 +1,24 @@
+---
+
+- name: Installing tools
+  package: name={{item}}
+  when: gui
+  with_items:
+    - ncdu
+    - telnet
+    - rsync
+    - screen
+    - lm-sensors
+    - unrar
+    - unzip
+    - p7zip-full
+    - iftop
+    - htop
+    - iotop
+
+- name: Installing tools (Gui)
+  package: name={{item}}
+  when: gui
+  with_items:
+    - bleachbit
+    - gparted

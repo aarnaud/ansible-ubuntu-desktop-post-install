@@ -1,0 +1,7 @@
+---
+
+- name: Installing extra filesystem support
+  package: name={{item}}
+  with_items:
+    - exfat-utils
+    - ntfs-3g

@@ -1,0 +1,25 @@
+---
+
+- name: Installing unity indicator and tweak-tool
+  package: name={{item}}
+  with_items:
+    - indicator-multiload
+    - indicator-cpufreq
+    #- indicator-sensors
+    - unity-tweak-tool
+
+- name: Installing other network manager protocol
+  package: name={{item}}
+  with_items:
+    - network-manager-openvpn
+    - network-manager-openvpn-gnome
+
+- name: Installing nautilus addons
+  package: name={{item}}
+  with_items: 
+    - nautilus-share
+    
+- file: path=/etc/lightdm/lightdm.conf.d state=directory mode=0755
+
+- name: Disable Guest Connection
+  copy: src=50-disable-guest.conf dest=/etc/lightdm/lightdm.conf.d/50-disable-guest.conf mode=0644

@@ -1,0 +1,20 @@
+---
+
+- name: Installing browsers
+  package: name={{item}}
+  with_items:
+    - chromium-browser
+    - chromium-browser-l10n
+    - chromium-codecs-ffmpeg-extra
+
+
+- stat: path=/usr/bin/google-chrome
+  register: google_chrome_stat
+
+- name: Downloading Google Chrome
+  get_url: url=https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb dest=/tmp/google_chrome.deb
+  when: not google_chrome_stat.stat.exists
+
+- name: Installing Google Chrome
+  apt: deb=/tmp/google_chrome.deb
+  when: not google_chrome_stat.stat.exists

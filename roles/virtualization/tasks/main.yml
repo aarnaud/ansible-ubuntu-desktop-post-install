@@ -1,0 +1,33 @@
+---
+
+- name: Installing virtualization support
+  package: name={{item}}
+  with_items:
+    - qemu-kvm
+    - qemu-utils
+    - libvirt-bin
+
+
+- name: Installing virtualization support
+  package: name={{item}}
+  when: gui
+  with_items:
+    - virt-manager
+
+- name: Adding VirtualBox repository key
+  apt_key: url=https://www.virtualbox.org/download/oracle_vbox.asc state=present
+  when: gui
+
+- name: Adding VirtualBox repository
+  apt_repository: repo="deb http://download.virtualbox.org/virtualbox/debian {{ansible_distribution_release}} contrib" state=present
+  when: gui
+
+- name: Installing VirtualBox
+  package: name={{item}}
+  when: gui
+  with_items:
+    - dkms
+    - virtualbox-5.0
+
+- name: Unmanaged virbr0 by Network Manager
+  ini_file: dest=/etc/NetworkManager/NetworkManager.conf section=keyfile option=unmanaged-devices value=interface-name:virbr0 backup=yes

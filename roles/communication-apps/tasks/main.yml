@@ -1,0 +1,15 @@
+---
+
+
+- stat: path=/usr/bin/jitsi
+  register: jitsi_stat
+
+- name: Downloading jitsi
+  get_url: url=https://download.jitsi.org/jitsi/debian/jitsi_2.8.5426-1_amd64.deb dest=/tmp/jitsi.deb
+  when: not jitsi_stat.stat.exists
+
+- name: Installing jitsi
+  apt: deb=/tmp/jitsi.deb
+  when: not jitsi_stat.stat.exists
+
+

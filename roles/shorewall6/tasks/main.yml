@@ -1,0 +1,37 @@
+---
+
+- name: Install Shorewall6
+  action: apt pkg={{item}} state=latest
+  with_items:
+    - shorewall6
+
+- name: "template zones"
+  action: template src=zones.j2 dest=/etc/shorewall6/zones owner=root group=root mode=0644 backup=yes
+  notify: Restart service shorewall
+
+- name: "template interfaces"
+  action: template src=interfaces.j2 dest=/etc/shorewall6/interfaces owner=root group=root mode=0644 backup=yes
+  notify: Restart service shorewall
+
+- name: "template policy"
+  action: template src=policy.j2 dest=/etc/shorewall6/policy owner=root group=root mode=0644 backup=yes
+  notify: Restart service shorewall
+
+- name: "template rules"
+  action: template src=rules.j2 dest=/etc/shorewall6/rules owner=root group=root mode=0644 backup=yes
+  notify: Restart service shorewall
+
+- name: "template masq"
+  action: template src=masq.j2 dest=/etc/shorewall6/masq owner=root group=root mode=0644 backup=yes
+  notify: Restart service shorewall
+  when: shorewall6.masquerade | bool and shorewall6.externalPorts is defined and shorewall6.internalPorts is defined
+
+- name: "Enable shorewall service"
+  action: lineinfile dest=/etc/default/shorewall6 regexp=^startup= line=startup=1
+  notify: Restart service shorewall
+  when: shorewall6.externalPorts is defined or shorewall6.internalPorts is defined
+
+- name: "Modify shorewall wait_interface "
+  action: lineinfile dest=/etc/default/shorewall6 regexp=^wait_interface= line="wait_interface=\"{{ shorewall.wait_interface }}\""
+  notify: Restart service shorewall
+  when: shorewall.wait_interface is defined

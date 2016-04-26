@@ -1,0 +1,21 @@
+---
+
+- name: Installing remote app
+  package: name={{item}}
+  with_items:
+    - freerdp-x11
+    - remmina
+    - remmina-plugin-rdp
+    - remmina-plugin-vnc
+
+
+- stat: path=/usr/bin/teamviewer
+  register: teamviewer_stat
+
+- name: Downloading Teamviewer
+  get_url: url=http://download.teamviewer.com/download/teamviewer_i386.deb dest=/tmp/teamviewer.deb
+  when: not teamviewer_stat.stat.exists
+
+- name: Installing Teamviewer
+  apt: deb=/tmp/teamviewer.deb
+  when: not teamviewer_stat.stat.exists

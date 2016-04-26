@@ -1,0 +1,18 @@
+---
+
+- name: Installing security apps
+  package: name={{item}}
+  with_items:
+    - gnupg2
+    - gnupg-agent
+    - pcscd
+    - scdaemon
+    - yubikey-personalization
+
+- name: Installing security graphical apps
+  package: name={{item}}
+  when: gui
+  with_items:
+    - keepass2
+    - pinentry-gtk2
+    - yubikey-personalization-gui

@@ -1,0 +1,56 @@
+---
+
+- hosts: all
+  become: yes
+  become_user: root
+  vars:
+    gui: True
+    nodejs_version: "4.x"
+    nodejs_install_npm_user: "anthony"
+    shorewall:
+      externalPorts:
+        - eno1
+        - wlp2s0
+      externalTCPAllowPorts:
+          - 22
+      externalUDPAllowPorts: []
+      internalPorts:
+        - lxdbr0
+        - virbr0
+        - tun0
+      masquerade: True
+      wait_interface: "eno0 wlp2s0"
+    shorewall6:
+      externalPorts:
+        - eno1
+        - wlp2s0
+      externalTCPAllowPorts:
+          - 22
+      externalUDPAllowPorts: []
+      internalPorts:
+        - lxdbr0
+        - virbr0
+        - tun0
+      masquerade: True
+      wait_interface: "eno0 wlp2s0"
+  
+  roles:
+    - clear-unused-apps
+    - btrfs-tools
+    - extra-filesystems
+    - security-tools
+    - tools
+    - browsers
+    - editors
+    - multimedia
+    - office
+    - remote-control-apps
+    - virtualization
+    - ubuntu-customization
+    - dev-tools
+    - nodejs
+    - communication-apps
+    - lxd
+    - shorewall
+    - shorewall6
+

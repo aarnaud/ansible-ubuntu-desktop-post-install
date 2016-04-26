@@ -1,0 +1,4 @@
+---
+
+- name: Remove unity webapps (Amazon)
+  package: name='unity-webapps-common' state=absent

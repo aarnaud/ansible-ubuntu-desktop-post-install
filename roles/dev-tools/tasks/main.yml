@@ -1,0 +1,76 @@
+---
+
+- name: Installing git
+  package: name={{item}}
+  with_items:
+    - git
+    - git-flow
+
+- name: Installing git tools (Gui)
+  package: name={{item}}
+  when: gui
+  with_items:
+    - gitk
+    - gitg
+    - meld
+    - diffuse
+
+- name: Installing DB tools
+  package: name={{item}}
+  when: gui
+  with_items:
+    - mysql-workbench
+    - pgadmin3
+
+- name: Adding PPA for ubuntu-make
+  apt_repository: repo=ppa:ubuntu-desktop/ubuntu-make
+
+- name: Installing ubuntu-make
+  package: name=ubuntu-make
+
+- name: Getting users on system
+  shell: "getent passwd | awk -F: '$3 >= 1000 && $3 <= 2000 { print $1 }'"
+  register: system_users
+
+- name: Installing visual-studio-code
+  command: umake ide visual-studio-code /home/anthony/.local/share/umake/ide/visual-studio-code --accept-license
+  args:
+    creates: /home/anthony/.local/share/umake/ide/visual-studio-code
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ system_users.stdout_lines }}"
+
+- name: Installing webstorm
+  command: umake ide webstorm /home/anthony/.local/share/umake/ide/webstorm
+  args:
+    creates: /home/anthony/.local/share/umake/ide/webstorm
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ system_users.stdout_lines }}"
+
+- name: Installing phpstorm
+  command: umake ide phpstorm /home/anthony/.local/share/umake/ide/phpstorm
+  args:
+    creates: /home/anthony/.local/share/umake/ide/phpstorm
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ system_users.stdout_lines }}"
+
+- name: Installing pycharm
+  command: umake ide pycharm /home/anthony/.local/share/umake/ide/pycharm
+  args:
+    creates: /home/anthony/.local/share/umake/ide/pycharm
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ system_users.stdout_lines }}"
+  
+- name: Installing idea-ultimate
+  command: umake ide idea-ultimate /home/anthony/.local/share/umake/ide/idea-ultimate
+  args:
+    creates: /home/anthony/.local/share/umake/ide/idea-ultimate
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ system_users.stdout_lines }}"
+  
+- name: Changing Inotify Watches Limit
+  sysctl: name="fs.inotify.max_user_watches" value=524288 sysctl_set=yes state=present reload=yes sysctl_file=/etc/sysctl.conf

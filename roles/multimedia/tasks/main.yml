@@ -1,0 +1,31 @@
+---
+
+- name: Installing multimedia app (cli)
+  package: name={{item}}
+  with_items:
+    - ffmpeg
+    - mediainfo
+
+- name: Installing multimedia apps (gui)
+  package: name={{item}}
+  when: gui
+  with_items:
+    - mediainfo-gui
+    - gimp
+    #- rawstudio
+    - rawtherapee
+    - kazam
+    - vlc
+
+
+- name: Adding spotify repository key
+  apt_key: keyserver=keyserver.ubuntu.com id=BBEBDCB318AD50EC6865090613B00F1FD2C19886
+  when: gui
+
+- name: Adding spotify repository
+  apt_repository: repo='deb http://repository.spotify.com stable non-free' state=present
+  when: gui
+
+- name: Installing spotify
+  package: name=spotify-client
+  when: gui

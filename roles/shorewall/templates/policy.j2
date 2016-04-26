@@ -1,0 +1,21 @@
+#
+# Shorewall version 4 - Policy File
+#
+# For information about entries in this file, type "man shorewall-policy"
+#
+# The manpage is also online at
+# http://www.shorewall.net/manpages/shorewall-policy.html
+#
+###############################################################################
+#SOURCE	DEST	POLICY		LOG		LIMIT:		CONNLIMIT:
+#							LEVEL	BURST		MASK
+$FW		all		ACCEPT
+{% if shorewall.internalPorts is defined %}
+loc		all		ACCEPT
+{% endif %}
+# Policies for traffic originating from the Internet zone (net)
+{% if shorewall.externalPorts is defined %}
+net		all		DROP
+{% endif %}
+# THE FOLLOWING POLICY MUST BE LAST
+all		all		REJECT

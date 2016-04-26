@@ -1,0 +1,12 @@
+---
+shorewall:
+  externalPorts:
+    - eth0
+  externalTCPAllowPorts:
+      - 22
+  externalUDPAllowPorts:
+      - 53
+  internalPorts:
+    - eth1
+  masquerade: True
+  wait_interface: "eth0 eth1"
