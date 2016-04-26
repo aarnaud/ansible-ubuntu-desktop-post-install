@@ -1,0 +1,35 @@
+--- 
+
+- name: Installing docker apt require
+  package: name={{item}}
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    
+- name: Adding docker repository key
+  apt_key: keyserver=keyserver.ubuntu.com id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: Adding docker repository
+  apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present
+
+- name: Installing docker
+  package: name={{item}}
+  with_items:
+    - linux-image-extra-virtual
+    - docker-engine
+
+- name: Adding docker group    
+  group: name=docker state=present
+  register: docker_group 
+
+- name: Getting users on system
+  shell: "getent passwd | awk -F: '$3 >= 1000 && $3 <= 2000 { print $1 }'"
+  register: system_users
+  
+- name: Add docker group to users
+  user: name={{item}} groups=docker append=yes
+  with_items: "{{ system_users.stdout_lines }}"
+  
+- name: Restarting docker engine
+  service: name=docker state=restarted
+  when: docker_group|changed

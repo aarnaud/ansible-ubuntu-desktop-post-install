@@ -18,6 +18,7 @@
         - lxdbr0
         - virbr0
         - tun0
+        - docker0
       masquerade: True
       wait_interface: "eno0 wlp2s0"
     shorewall6:
@@ -31,6 +32,7 @@
         - lxdbr0
         - virbr0
         - tun0
+        - docker0
       masquerade: True
       wait_interface: "eno0 wlp2s0"
   
@@ -51,6 +53,7 @@
     - nodejs
     - communication-apps
     - lxd
+    - docker
     - shorewall
     - shorewall6
 
