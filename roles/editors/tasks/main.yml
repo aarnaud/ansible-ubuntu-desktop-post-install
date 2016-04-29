@@ -2,9 +2,23 @@
 
 - name: Add webupd8team sublime-text-3 PPA
   apt_repository: repo='ppa:webupd8team/sublime-text-3'
+  when: editors.sublime_text
 
 - name: Installing sublime-text
   package: name='sublime-text-installer'
+  when: editors.sublime_text
+
+- stat: path=/usr/bin/atom
+  register: atom_stat
+  when: editors.atom
+
+- name: Downloading atom
+  get_url: url=https://atom.io/download/deb dest=/tmp/atom.deb
+  when: not atom_stat.stat.exists and editors.atom
+
+- name: Installing atom
+  apt: deb=/tmp/atom.deb
+  when: not atom_stat.stat.exists and editors.atom
 
 - name: Getting users on system
   shell: "getent passwd | awk -F: '$3 >= 1000 && $3 <= 2000 { print $1 }'"
@@ -17,6 +31,7 @@
   become: yes
   become_user: "{{ item }}"
   with_items: "{{ system_users.stdout_lines }}"
+  when: editors.visual_studio_code
 
 - name: Installing webstorm
   command: umake ide webstorm /home/anthony/.local/share/umake/ide/webstorm
@@ -25,6 +40,7 @@
   become: yes
   become_user: "{{ item }}"
   with_items: "{{ system_users.stdout_lines }}"
+  when: editors.webstorm
 
 - name: Installing phpstorm
   command: umake ide phpstorm /home/anthony/.local/share/umake/ide/phpstorm
@@ -33,6 +49,7 @@
   become: yes
   become_user: "{{ item }}"
   with_items: "{{ system_users.stdout_lines }}"
+  when: editors.phpstorm
 
 - name: Installing pycharm
   command: umake ide pycharm /home/anthony/.local/share/umake/ide/pycharm
@@ -41,7 +58,17 @@
   become: yes
   become_user: "{{ item }}"
   with_items: "{{ system_users.stdout_lines }}"
-  
+  when: editors.pycharm
+
+- name: Installing idea
+  command: umake ide idea /home/anthony/.local/share/umake/ide/idea
+  args:
+    creates: /home/anthony/.local/share/umake/ide/idea
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ system_users.stdout_lines }}"
+  when: editors.idea
+
 - name: Installing idea-ultimate
   command: umake ide idea-ultimate /home/anthony/.local/share/umake/ide/idea-ultimate
   args:
@@ -49,3 +76,4 @@
   become: yes
   become_user: "{{ item }}"
   with_items: "{{ system_users.stdout_lines }}"
+  when: editors.idea_ultimate

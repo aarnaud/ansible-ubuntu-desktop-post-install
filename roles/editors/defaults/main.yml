@@ -1,0 +1,11 @@
+---
+
+editors:
+  sublime_text: True
+  atom: True
+  visual_studio_code: True
+  webstorm: True
+  phpstorm: True
+  pycharm: True
+  idea: True
+  idea_ultimate: False
