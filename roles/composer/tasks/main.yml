@@ -1,0 +1,23 @@
+---
+
+- name: Installing requirements
+  package: name={{item}}
+  with_items:
+    - wget
+    - php-cli
+
+- name: Install composer
+  script: composer-install.sh
+  tags: composer
+
+- name: "Get users on system"
+  shell: "getent passwd | awk -F: '$3 >= 1000 && $3 <= 2000 { print $1 }'"
+  register: system_users
+  tags: composer
+
+- name: "Set github token for users"
+  shell: /usr/local/bin/composer config --global github-oauth.github.com "{{ composer_github_token }}"
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ system_users.stdout_lines }}"
+  when: composer_github_token is defined
