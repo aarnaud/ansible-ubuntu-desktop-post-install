@@ -14,6 +14,7 @@
     - lxc2
     - lxcfs
     - cgmanager
+    - dnsmasq # For custum config in /etc/dnsmasq.d/
 
 
 - name: Getting users on system
