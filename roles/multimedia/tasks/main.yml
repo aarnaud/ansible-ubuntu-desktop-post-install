@@ -5,6 +5,7 @@
   with_items:
     - ffmpeg
     - mediainfo
+    - libimage-exiftool-perl
 
 - name: Installing multimedia apps (gui)
   package: name={{item}}
