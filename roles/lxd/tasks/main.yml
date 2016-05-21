@@ -57,3 +57,5 @@
 - name: Restart lxd-bridge
   service: name=lxd-bridge state=restarted enabled=yes
   when: lxd_bridge_config|changed or lxd_net_dnmasq_config|changed
+
+- set_fact: network_manager_unmanaged_devices="{{network_manager_unmanaged_devices}} + [ 'interface-name:lxdbr0' ]"

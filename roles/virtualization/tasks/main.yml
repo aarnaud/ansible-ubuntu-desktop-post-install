@@ -29,5 +29,5 @@
     - dkms
     - virtualbox-5.0
 
-- name: Unmanaged virbr0 by Network Manager
-  ini_file: dest=/etc/NetworkManager/NetworkManager.conf section=keyfile option=unmanaged-devices value=interface-name:virbr0 backup=yes
+- set_fact: network_manager_unmanaged_devices="{{network_manager_unmanaged_devices}} + [ 'interface-name:virbr0' ]"
+- set_fact: network_manager_unmanaged_devices="{{network_manager_unmanaged_devices}} + [ 'interface-name:vboxnet0' ]"

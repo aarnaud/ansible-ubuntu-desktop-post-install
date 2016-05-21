@@ -33,3 +33,5 @@
 - name: Restarting docker engine
   service: name=docker state=restarted
   when: docker_group|changed
+
+- set_fact: network_manager_unmanaged_devices="{{network_manager_unmanaged_devices}} + [ 'interface-name:docker0' ]"

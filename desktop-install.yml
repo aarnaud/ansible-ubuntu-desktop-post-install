@@ -35,7 +35,10 @@
         - docker0
       masquerade: True
       wait_interface: "eno0 wlp2s0"
-  
+
+  pre_tasks:
+    - set_fact: network_manager_unmanaged_devices={{[]}}
+
   roles:
     - clear-unused-apps
     - btrfs-tools
@@ -58,4 +61,11 @@
     - shorewall
     - shorewall6
     - golang
+
+  post_tasks:
+    - ini_file: dest=/etc/NetworkManager/NetworkManager.conf
+                section=keyfile
+                option=unmanaged-devices
+                value={{network_manager_unmanaged_devices|join(',')}}
+                backup=yes
 
