@@ -31,6 +31,9 @@
 - name: "Ubuntu create LXD dnsmasq conf"
   template: src="dnsmasq.conf.j2" dest="/etc/lxd/dnsmasq.conf" backup=no
 
+- name: "Ignore lxdbr0 in dnsmasq system"
+  template: src="dnsmasq-lxdbr0.conf.j2" dest="/etc/dnsmasq.d/lxdbr0" backup=no
+
 - name: "Ubuntu create LXD dnsmasq-hosts.conf"
   file: dest="/etc/lxd/dnsmasq-hosts.conf" state=touch
 
