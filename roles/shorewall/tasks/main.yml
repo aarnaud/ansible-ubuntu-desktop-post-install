@@ -22,6 +22,10 @@
   action: template src=rules.j2 dest=/etc/shorewall/rules owner=root group=root mode=0644 backup=yes
   notify: Restart service shorewall
 
+- name: "template mangle"
+  action: template src=mangle.j2 dest=/etc/shorewall/mangle owner=root group=root mode=0644 backup=yes
+  notify: Restart service shorewall
+
 - name: "template masq"
   action: template src=masq.j2 dest=/etc/shorewall/masq owner=root group=root mode=0644 backup=yes
   notify: Restart service shorewall
