@@ -37,7 +37,7 @@
       wait_interface: "eno0 wlp2s0"
 
   pre_tasks:
-    - set_fact: network_manager_unmanaged_devices={{[]}}
+    - set_fact: network_manager_unmanaged_devices={{['interface-name:tun*']}}
 
   roles:
     - clear-unused-apps
