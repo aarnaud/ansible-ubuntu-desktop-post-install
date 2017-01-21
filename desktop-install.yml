@@ -9,8 +9,8 @@
     nodejs_install_npm_user: "anthony"
     shorewall:
       externalPorts:
-        - eno1
-        - wlp2s0
+        - wl+
+        - en+
       externalTCPAllowPorts:
           - 22
       externalUDPAllowPorts: []
@@ -20,11 +20,11 @@
         - tun0
         - docker0
       masquerade: True
-      wait_interface: "eno0 wlp2s0"
+      wait_interface: ""
     shorewall6:
       externalPorts:
-        - eno1
-        - wlp2s0
+        - wl+
+        - en+
       externalTCPAllowPorts:
           - 22
       externalUDPAllowPorts: []
@@ -34,7 +34,7 @@
         - tun0
         - docker0
       masquerade: True
-      wait_interface: "eno0 wlp2s0"
+      wait_interface: ""
 
   pre_tasks:
     - set_fact: network_manager_unmanaged_devices={{['interface-name:tun*']}}

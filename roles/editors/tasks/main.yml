@@ -14,11 +14,11 @@
 
 - name: Downloading atom
   get_url: url=https://atom.io/download/deb dest=/tmp/atom.deb
-  when: not atom_stat.stat.exists and editors.atom
+  when: editors.atom and not atom_stat.stat.exists
 
 - name: Installing atom
   apt: deb=/tmp/atom.deb
-  when: not atom_stat.stat.exists and editors.atom
+  when: editors.atom and not atom_stat.stat.exists
 
 - name: Getting users on system
   shell: "getent passwd | awk -F: '$3 >= 1000 && $3 <= 2000 { print $1 }'"
