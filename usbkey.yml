@@ -1,0 +1,85 @@
+---
+
+
+- name: Install ansible requirements
+  hosts: all
+  become: yes
+  become_user: root
+  gather_facts: no
+  pre_tasks:
+    - name: 'install python2'
+      raw: apt-get -yq install python-simplejson python-pip
+      changed_when: False
+
+- hosts: all
+  become: yes
+  become_user: root
+  vars:
+    gui: True
+    editors:
+      sublime_text: False
+      atom: False
+      visual_studio_code: True
+      webstorm: False
+      phpstorm: False
+      pycharm: False
+      idea: False
+      idea_ultimate: False
+
+    shorewall:
+      externalPorts:
+        - wl+
+        - en+
+      externalTCPAllowPorts:
+          - 22
+      externalUDPAllowPorts: []
+      internalPorts:
+        - lxdbr0
+        - virbr0
+        - tun0
+        - docker0
+      masquerade: True
+      wait_interface: ""
+    shorewall6:
+      externalPorts:
+        - wl+
+        - en+
+      externalTCPAllowPorts:
+          - 22
+      externalUDPAllowPorts: []
+      internalPorts:
+        - lxdbr0
+        - virbr0
+        - tun0
+        - docker0
+      masquerade: True
+      wait_interface: ""
+
+  pre_tasks:
+    - set_fact: network_manager_unmanaged_devices={{['interface-name:tun*']}}
+
+  roles:
+    - desktop-minimal
+    - clear-unused-apps
+    - btrfs-tools
+    - extra-filesystems
+    - security-tools
+    - tools
+    - browsers
+    - editors
+    - remote-control-apps
+    - virtualization
+    - ubuntu-customization
+    - dev-tools
+    - lxd
+    - docker
+    - shorewall
+    - shorewall6
+
+  post_tasks:
+    - ini_file: dest=/etc/NetworkManager/NetworkManager.conf
+                section=keyfile
+                option=unmanaged-devices
+                value={{network_manager_unmanaged_devices|join(',')}}
+                backup=yes
+

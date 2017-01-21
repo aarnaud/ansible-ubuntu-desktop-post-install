@@ -1,0 +1,41 @@
+---
+
+- name: Installing minimal desktop
+  apt:
+    name: "{{item}}"
+    install_recommends: False
+  with_items:
+    - ubuntu-desktop
+    - unity-settings-daemon
+    - unity-control-center
+    - unity-lens-applications
+    - zeitgeist
+    - indicator-application
+    - indicator-appmenu
+    - indicator-bluetooth
+    - indicator-cpufreq
+    - indicator-datetime
+    - indicator-keyboard
+    - indicator-messages
+    - indicator-multiload
+    - indicator-power
+    - indicator-printers
+    - indicator-session
+    - indicator-sound
+    - indicator-sysmonitor
+    - network-manager-gnome
+    - network-manager-vpnc
+    - network-manager-vpnc-gnome
+    - gedit
+    - evince
+    - eog
+    - gnome-terminal
+    - terminator
+    - nano
+    - dnsutils
+    - traceroute
+    - mtr-tiny
+    - wireshark
+    - gnome-disk-utility
+    - lvm2
+    - testdisk
