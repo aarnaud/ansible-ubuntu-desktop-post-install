@@ -1,5 +1,8 @@
 ---
 
+- name: Add x2go ppa
+  apt_repository: repo=ppa:x2go/stable
+
 - name: Installing remote app
   package: name={{item}}
   with_items:
@@ -7,6 +10,15 @@
     - remmina
     - remmina-plugin-rdp
     - remmina-plugin-vnc
+    - x2goserver
+    - x2goserver-extensions
+    - x2goclient
+
+- name: Patch x2goagent
+  lineinfile:
+    dest: /etc/x2go/x2goagent.options
+    regexp: "^X2GO_NXAGENT_DEFAULT_OPTIONS="
+    line: 'X2GO_NXAGENT_DEFAULT_OPTIONS="-extension BIG-REQUESTS"'
 
 
 - stat: path=/usr/bin/teamviewer
@@ -19,3 +31,6 @@
 - name: Installing Teamviewer
   apt: deb=/tmp/teamviewer.deb
   when: not teamviewer_stat.stat.exists
+
+- name: Disable teamviewer startup
+  service: name="teamviewerd" state=stopped enabled=no

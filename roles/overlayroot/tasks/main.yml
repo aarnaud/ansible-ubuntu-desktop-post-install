@@ -1,0 +1,28 @@
+---
+
+- name: "Patch dhclient apparmor for overlayroot"
+  file:
+    src: /etc/apparmor.d/sbin.dhclient
+    dest: /etc/apparmor.d/disable/sbin.dhclient
+    state: link
+  notify: reload apparmor
+
+- name: "Patch libvirtd apparmor for overlayroot"
+  file:
+    src: /etc/apparmor.d/usr.sbin.libvirtd
+    dest: /etc/apparmor.d/disable/usr.sbin.libvirtd
+    state: link
+  notify: reload apparmor
+
+- name: "Patch cupsd apparmor for overlayroot"
+  file:
+    src: /etc/apparmor.d/usr.sbin.cupsd
+    dest: /etc/apparmor.d/disable/usr.sbin.cupsd
+    state: link
+  notify: reload apparmor
+
+- name: "Enable overlayroot"
+  lineinfile:
+    dest: /etc/overlayroot.conf
+    regexp: "^overlayroot="
+    line: 'overlayroot="tmpfs:recurse=0,swap=1"'

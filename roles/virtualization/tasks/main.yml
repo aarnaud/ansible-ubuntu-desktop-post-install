@@ -4,8 +4,10 @@
   package: name={{item}}
   with_items:
     - qemu-kvm
+    - qemu-efi
     - qemu-utils
     - libvirt-bin
+    - ovmf
 
 
 - name: Installing virtualization support

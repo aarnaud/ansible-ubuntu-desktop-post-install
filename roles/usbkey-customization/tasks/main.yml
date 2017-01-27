@@ -1,0 +1,36 @@
+---
+
+- name: Installing firmware
+  package: name={{item}}
+  with_items:
+    - linux-firmware
+    - firmware-b43-installer
+    - grub-pc-bin
+
+- name: Copy network interfaces config
+  copy:
+    src: interfaces.conf
+    dest: /etc/network/interfaces
+  notify: restart network-manager
+
+- name: Update grub config
+  lineinfile:
+    dest: /etc/default/grub
+    regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"'
+  notify: reload grub
+
+- name: Disable apport
+  lineinfile:
+    dest: /etc/default/apport
+    regexp: "^enabled="
+    line: 'enabled=0'
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - fr_FR.UTF-8
+    - en_US.UTF-8
+    - en_GB.UTF-8

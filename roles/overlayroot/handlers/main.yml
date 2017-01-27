@@ -1,0 +1,5 @@
+---
+
+- name: reload apparmor
+  service: name=apparmor state=reloaded
+

@@ -2,8 +2,9 @@
 
 - name: Installing tools
   package: name={{item}}
-  when: gui
   with_items:
+    - bash-completion
+    - zsh
     - ncdu
     - telnet
     - rsync
@@ -15,6 +16,7 @@
     - iftop
     - htop
     - iotop
+    - tcpdump
 
 - name: Installing tools (Gui)
   package: name={{item}}

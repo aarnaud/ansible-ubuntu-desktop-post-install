@@ -1,0 +1,7 @@
+---
+
+- name: restart network-manager
+  service: name=network-manager state=restarted enabled=yes
+
+- name: reload grub
+  shell: update-grub

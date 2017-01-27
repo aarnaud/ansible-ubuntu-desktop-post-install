@@ -72,9 +72,10 @@
     - ubuntu-customization
     - dev-tools
     - lxd
-    - docker
     - shorewall
     - shorewall6
+    - usbkey-customization
+    - overlayroot
 
   post_tasks:
     - ini_file: dest=/etc/NetworkManager/NetworkManager.conf
@@ -83,3 +84,6 @@
                 value={{network_manager_unmanaged_devices|join(',')}}
                 backup=yes
 
+    - name: "Clean space"
+      shell: |
+        bleachbit --clean apt.autoclean apt.autoremove apt.clean system.cache system.rotated_logs system.tmp system.trash

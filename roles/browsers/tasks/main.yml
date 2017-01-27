@@ -6,6 +6,9 @@
     - chromium-browser
     - chromium-browser-l10n
     - chromium-codecs-ffmpeg-extra
+    - firefox
+    - firefox-locale-en
+    - firefox-locale-fr
 
 
 - stat: path=/usr/bin/google-chrome

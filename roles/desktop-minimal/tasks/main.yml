@@ -6,9 +6,15 @@
     install_recommends: False
   with_items:
     - ubuntu-desktop
+    - plymouth-theme-ubuntu-logo
+    - xfce4
+    - xfce4-power-manager
+    - gtk3-engines-xfce
+    - thunar-archive-plugin
     - unity-settings-daemon
     - unity-control-center
     - unity-lens-applications
+    - activity-log-manager-control-center
     - zeitgeist
     - indicator-application
     - indicator-appmenu
@@ -22,7 +28,6 @@
     - indicator-printers
     - indicator-session
     - indicator-sound
-    - indicator-sysmonitor
     - network-manager-gnome
     - network-manager-vpnc
     - network-manager-vpnc-gnome
