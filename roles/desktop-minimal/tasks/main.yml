@@ -5,29 +5,14 @@
     name: "{{item}}"
     install_recommends: False
   with_items:
-    - ubuntu-desktop
-    - plymouth-theme-ubuntu-logo
+    - ubuntu-gnome-desktop
+    - plymouth-theme-ubuntu-gnome-logo
     - xfce4
     - xfce4-power-manager
     - gtk3-engines-xfce
     - thunar-archive-plugin
-    - unity-settings-daemon
-    - unity-control-center
-    - unity-lens-applications
     - activity-log-manager-control-center
     - zeitgeist
-    - indicator-application
-    - indicator-appmenu
-    - indicator-bluetooth
-    - indicator-cpufreq
-    - indicator-datetime
-    - indicator-keyboard
-    - indicator-messages
-    - indicator-multiload
-    - indicator-power
-    - indicator-printers
-    - indicator-session
-    - indicator-sound
     - network-manager-gnome
     - network-manager-vpnc
     - network-manager-vpnc-gnome
@@ -42,5 +27,7 @@
     - mtr-tiny
     - wireshark
     - gnome-disk-utility
-    - lvm2
     - testdisk
+    # gnome-shell: system-monitor extension
+    - gir1.2-gtop-2.0
+    - gir1.2-networkmanager-1.0

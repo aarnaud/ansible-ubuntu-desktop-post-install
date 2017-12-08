@@ -5,3 +5,7 @@
   with_items:
     - exfat-utils
     - ntfs-3g
+    - mdadm
+    - lvm2
+    - zfsutils-linux
+    - btrfs-tools

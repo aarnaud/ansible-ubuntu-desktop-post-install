@@ -17,8 +17,20 @@
   lineinfile:
     dest: /etc/default/grub
     regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="splash"'
   notify: reload grub
+
+- name: Disable Update-Package-Lists
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/10periodic
+    regexp: "^APT::Periodic::Update-Package-Lists"
+    line: 'APT::Periodic::Update-Package-Lists "1";'
+
+- name: Disable Unattended-Upgrade
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/10periodic
+    regexp: "^APT::Periodic::Unattended-Upgrade"
+    line: 'APT::Periodic::Unattended-Upgrade "0";'
 
 - name: Disable apport
   lineinfile:

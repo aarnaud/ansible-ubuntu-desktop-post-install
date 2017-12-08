@@ -87,3 +87,4 @@
     - name: "Clean space"
       shell: |
         bleachbit --clean apt.autoclean apt.autoremove apt.clean system.cache system.rotated_logs system.tmp system.trash
+        apt-btrfs-snapshot delete-older-than 0d

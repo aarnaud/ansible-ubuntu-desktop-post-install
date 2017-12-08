@@ -19,6 +19,7 @@
     src: /etc/apparmor.d/usr.sbin.cupsd
     dest: /etc/apparmor.d/disable/usr.sbin.cupsd
     state: link
+    force: yes
   notify: reload apparmor
 
 - name: "Enable overlayroot"
