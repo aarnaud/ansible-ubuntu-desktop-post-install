@@ -1,21 +1,19 @@
 ---
 
 - name: Installing network tools
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - bridge-utils
-    - rinetd
 
 - name: Installing LXD/LXC
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - lxd
     - lxd-client
-    - lxc2
     - lxcfs
-    - cgmanager
     - dnsmasq # For custum config in /etc/dnsmasq.d/
-
 
 - name: Getting users on system
   shell: "getent passwd | awk -F: '$3 >= 1000 && $3 <= 2000 { print $1 }'"
@@ -24,41 +22,5 @@
 - name: "Add lxd group to users"
   user: name={{item}} groups=lxd append=yes
   with_items: "{{ system_users.stdout_lines }}"
-
-- name: "Create LXD config directory"
-  file: path=/etc/lxd state=directory mode=0755
-
-- name: "Ubuntu create LXD dnsmasq conf"
-  template: src="dnsmasq.conf.j2" dest="/etc/lxd/dnsmasq.conf" backup=no
-
-- name: "Ignore lxdbr0 in dnsmasq system"
-  template: src="dnsmasq-lxdbr0.conf.j2" dest="/etc/dnsmasq.d/lxdbr0" backup=no
-
-- name: "Ubuntu create LXD dnsmasq-hosts.conf"
-  file: dest="/etc/lxd/dnsmasq-hosts.conf" state=touch
-
-- name: "Generate dnsmasq static ip conf"
-  lineinfile: dest="/etc/lxd/dnsmasq-hosts.conf" regexp="^{{ item.name }}," line="{{ item.name }},{{ item.ip }}"
-  with_items: "{{ LXD_STATIC_SERVERS }}"
-  when: LXD_STATIC_SERVERS is defined
-  register: lxd_net_dnmasq_config
-
-- name: "Configure lxd-bridge"
-  lineinfile: dest="/etc/default/lxd-bridge" regexp="{{ item.regexp }}" line="{{ item.line }}"
-  with_items:
-    - { regexp: "^USE_LXD_BRIDGE", line: "USE_LXD_BRIDGE=\"true\"" }
-    - { regexp: "^LXD_CONFILE=", line: "LXD_CONFILE=\"/etc/lxd/dnsmasq.conf\"" }
-    - { regexp: "^LXD_IPV4_ADDR=", line: "LXD_IPV4_ADDR=\"{{ LXD_IPV4_ADDR }}\"" }
-    - { regexp: "^LXD_IPV4_NETMASK=", line: "LXD_IPV4_NETMASK=\"{{ LXD_IPV4_NETMASK }}\"" }
-    - { regexp: "^LXD_IPV4_NETWORK=", line: "LXD_IPV4_NETWORK=\"{{ LXD_IPV4_NETWORK }}\"" }
-    - { regexp: "^LXD_IPV4_DHCP_RANGE=", line: "LXD_IPV4_DHCP_RANGE=\"{{ LXD_IPV4_DHCP_RANGE }}\"" }
-    - { regexp: "^LXD_IPV4_DHCP_MAX=", line: "LXD_IPV4_DHCP_MAX=\"{{ LXD_IPV4_DHCP_MAX }}\"" }
-    - { regexp: "^LXD_IPV6_PROXY=", line: "LXD_IPV6_PROXY=\"false\"" }
-  register: lxd_bridge_config
-
-# force restart after change, don't wait notify
-- name: Restart lxd-bridge
-  service: name=lxd-bridge state=restarted enabled=yes
-  when: lxd_bridge_config|changed or lxd_net_dnmasq_config|changed
 
 - set_fact: network_manager_unmanaged_devices="{{network_manager_unmanaged_devices}} + [ 'interface-name:lxdbr0' ]"

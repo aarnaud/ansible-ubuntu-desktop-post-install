@@ -1,7 +1,8 @@
 ---
 
 - name: Installing firmware
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - linux-firmware
     - firmware-b43-installer

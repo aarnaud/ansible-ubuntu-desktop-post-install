@@ -1,7 +1,8 @@
 ---
 
 - name: Installing tools
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - bash-completion
     - zsh
@@ -19,7 +20,8 @@
     - tcpdump
 
 - name: Installing tools (Gui)
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   when: gui
   with_items:
     - bleachbit

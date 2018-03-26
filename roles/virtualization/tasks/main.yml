@@ -1,7 +1,8 @@
 ---
 
 - name: Installing virtualization support
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - qemu-kvm
     - qemu-efi
@@ -11,7 +12,8 @@
 
 
 - name: Installing virtualization support
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   when: gui
   with_items:
     - virt-manager
@@ -25,11 +27,12 @@
   when: gui
 
 - name: Installing VirtualBox
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   when: gui
   with_items:
     - dkms
-    - virtualbox-5.1
+    - virtualbox-5.2
 
 - set_fact: network_manager_unmanaged_devices="{{network_manager_unmanaged_devices}} + [ 'interface-name:virbr*' ]"
 - set_fact: network_manager_unmanaged_devices="{{network_manager_unmanaged_devices}} + [ 'interface-name:vboxnet*' ]"

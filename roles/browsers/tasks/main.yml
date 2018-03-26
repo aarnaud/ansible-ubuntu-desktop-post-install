@@ -1,7 +1,8 @@
 ---
 
 - name: Installing browsers
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - chromium-browser
     - chromium-browser-l10n
@@ -19,5 +20,6 @@
   when: not google_chrome_stat.stat.exists
 
 - name: Installing Google Chrome
-  apt: deb=/tmp/google_chrome.deb
+  apt:
+    deb: /tmp/google_chrome.deb
   when: not google_chrome_stat.stat.exists

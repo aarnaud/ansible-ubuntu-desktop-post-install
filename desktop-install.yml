@@ -5,8 +5,6 @@
   become_user: root
   vars:
     gui: True
-    nodejs_version: "4.x"
-    nodejs_install_npm_user: "anthony"
     shorewall:
       externalPorts:
         - wl+
@@ -54,13 +52,10 @@
     - ubuntu-customization
     - dev-tools
     - composer
-    - nodejs
-    - communication-apps
     - lxd
     - docker
     - shorewall
     - shorewall6
-    - golang
 
   post_tasks:
     - ini_file: dest=/etc/NetworkManager/NetworkManager.conf

@@ -1,7 +1,8 @@
 --- 
 
 - name: Installing docker apt require
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - apt-transport-https
     - ca-certificates
@@ -13,7 +14,8 @@
   apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-xenial main' state=present
 
 - name: Installing docker
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - linux-image-extra-virtual
     - docker-engine

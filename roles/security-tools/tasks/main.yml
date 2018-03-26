@@ -1,18 +1,21 @@
 ---
 
 - name: Installing security apps
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - gnupg2
     - gnupg-agent
     - pcscd
     - scdaemon
     - yubikey-personalization
+    - yubikey-luks
 
 - name: Installing security graphical apps
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   when: gui
   with_items:
-    - keepass2
+    - keepassxc
     - pinentry-gtk2
     - yubikey-personalization-gui

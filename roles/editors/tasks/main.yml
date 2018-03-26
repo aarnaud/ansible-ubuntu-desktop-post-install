@@ -1,13 +1,5 @@
 ---
 
-- name: Add webupd8team sublime-text-3 PPA
-  apt_repository: repo='ppa:webupd8team/sublime-text-3'
-  when: editors.sublime_text
-
-- name: Installing sublime-text
-  package: name='sublime-text-installer'
-  when: editors.sublime_text
-
 - stat: path=/usr/bin/atom
   register: atom_stat
   when: editors.atom

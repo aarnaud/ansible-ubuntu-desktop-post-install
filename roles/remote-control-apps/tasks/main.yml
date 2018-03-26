@@ -4,7 +4,8 @@
   apt_repository: repo=ppa:x2go/stable
 
 - name: Installing remote app
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - freerdp-x11
     - remmina
@@ -20,9 +21,33 @@
     regexp: "^X2GO_NXAGENT_DEFAULT_OPTIONS="
     line: 'X2GO_NXAGENT_DEFAULT_OPTIONS="-extension BIG-REQUESTS"'
 
-
 - stat: path=/usr/bin/teamviewer
   register: teamviewer_stat
+
+
+- name: Add i386 arch
+  command: dpkg --add-architecture i386
+  when: not teamviewer_stat.stat.exists
+
+- name: Installing teamviewer deps
+  apt:
+    name: "{{item}}"
+    update_cache: yes
+  with_items:
+    - libc6:i386
+    - libgcc1:i386
+    - libasound2:i386
+    - libfreetype6:i386
+    - zlib1g:i386
+    - libsm6:i386
+    - libxdamage1:i386
+    - libxext6:i386
+    - libxfixes3:i386
+    - libxrender1:i386
+    - libxtst6:i386
+    - libxrandr2:i386
+  when: not teamviewer_stat.stat.exists
+
 
 - name: Downloading Teamviewer
   get_url: url=http://download.teamviewer.com/download/teamviewer_i386.deb dest=/tmp/teamviewer.deb

@@ -6,7 +6,8 @@
     install_recommends: False
   with_items:
     - ubuntu-gnome-desktop
-    - plymouth-theme-ubuntu-gnome-logo
+    - plymouth-theme-ubuntu-logo
+    - plymouth-theme-ubuntu-text
     - xfce4
     - xfce4-power-manager
     - gtk3-engines-xfce

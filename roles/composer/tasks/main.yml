@@ -1,7 +1,8 @@
 ---
 
 - name: Installing requirements
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - wget
     - php-cli

@@ -1,6 +1,0 @@
-
-- name: Installing golang
-  package: name={{item}}
-  with_items:
-    - golang-go
-

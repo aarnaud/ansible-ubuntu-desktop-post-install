@@ -1,7 +1,8 @@
 ---
 
 - name: Installing extra filesystem support
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - exfat-utils
     - ntfs-3g

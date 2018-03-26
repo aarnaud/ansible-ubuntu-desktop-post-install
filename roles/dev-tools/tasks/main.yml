@@ -1,13 +1,15 @@
 ---
 
 - name: Installing git
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - git
     - git-flow
 
 - name: Installing git tools (Gui)
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   when: gui
   with_items:
     - gitk
@@ -16,17 +18,16 @@
     - diffuse
 
 - name: Installing DB tools
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   when: gui
   with_items:
     - mysql-workbench
     - pgadmin3
 
-- name: Adding PPA for ubuntu-make
-  apt_repository: repo=ppa:ubuntu-desktop/ubuntu-make
-
 - name: Installing ubuntu-make
-  package: name=ubuntu-make
+  apt:
+    name: ubuntu-make
   
 - name: Changing Inotify Watches Limit
   sysctl: name="fs.inotify.max_user_watches" value=524288 sysctl_set=yes state=present reload=yes sysctl_file=/etc/sysctl.conf

@@ -1,14 +1,16 @@
 ---
 
 - name: Installing multimedia app (cli)
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - ffmpeg
     - mediainfo
     - libimage-exiftool-perl
 
 - name: Installing multimedia apps (gui)
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   when: gui
   with_items:
     - mediainfo-gui
@@ -19,14 +21,16 @@
     - vlc
 
 
-- name: Adding spotify repository key
-  apt_key: keyserver=keyserver.ubuntu.com id=BBEBDCB318AD50EC6865090613B00F1FD2C19886
-  when: gui
-
-- name: Adding spotify repository
-  apt_repository: repo='deb http://repository.spotify.com stable non-free' state=present
-  when: gui
-
-- name: Installing spotify
-  package: name=spotify-client
-  when: gui
+# TODO: use snap for spotify
+#- name: Adding spotify repository key
+#  apt_key: keyserver=keyserver.ubuntu.com id=EFDC8610341D9410
+#  when: gui
+#
+#- name: Adding spotify repository
+#  apt_repository: repo='deb http://repository.spotify.com stable non-free' state=present
+#  when: gui
+#
+#- name: Installing spotify
+#  apt:
+#    name: spotify-client
+#  when: gui

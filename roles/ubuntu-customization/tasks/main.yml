@@ -1,17 +1,25 @@
 ---
 
 - name: Installing other network manager protocol
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - network-manager-openvpn
     - network-manager-openvpn-gnome
 
 - name: Installing nautilus addons
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items: 
     - nautilus-share
-    
-- file: path=/etc/lightdm/lightdm.conf.d state=directory mode=0755
 
-- name: Disable Guest Connection
-  copy: src=50-disable-guest.conf dest=/etc/lightdm/lightdm.conf.d/50-disable-guest.conf mode=0644
+- name: Installing nautilus addons
+  apt:
+    name: "{{item}}"
+  with_items:
+    - chrome-gnome-shell
+    - gnome-tweaks
+#- file: path=/etc/lightdm/lightdm.conf.d state=directory mode=0755
+#
+#- name: Disable Guest Connection
+#  copy: src=50-disable-guest.conf dest=/etc/lightdm/lightdm.conf.d/50-disable-guest.conf mode=0644

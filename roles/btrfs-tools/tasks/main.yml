@@ -1,7 +1,8 @@
 ---
 
 - name: Installing btrfs tools
-  package: name={{item}}
+  apt:
+    name: "{{item}}"
   with_items:
     - btrfs-tools
     - apt-btrfs-snapshot
