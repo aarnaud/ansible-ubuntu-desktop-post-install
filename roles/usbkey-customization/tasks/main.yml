@@ -32,6 +32,12 @@
     regexp: "^APT::Periodic::Unattended-Upgrade"
     line: 'APT::Periodic::Unattended-Upgrade "0";'
 
+- name: Disable lvmetad
+  replace:
+    dest: /etc/lvm/lvm.conf
+    regexp: '^(\s+)?use_lvmetad'
+    line: '\1use_lvmetad = 0'
+
 - name: Disable apport
   lineinfile:
     dest: /etc/default/apport

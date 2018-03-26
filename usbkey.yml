@@ -84,7 +84,9 @@
                 value={{network_manager_unmanaged_devices|join(',')}}
                 backup=yes
 
-    - name: "Clean space"
+    - name: "Clean space and finish install"
       shell: |
         bleachbit --clean apt.autoclean apt.autoremove apt.clean system.cache system.rotated_logs system.tmp system.trash
         apt-btrfs-snapshot delete-older-than 0d
+        update-grub
+        update-initramfs -u -k all
