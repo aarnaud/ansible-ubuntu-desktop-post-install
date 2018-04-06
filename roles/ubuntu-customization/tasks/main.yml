@@ -6,6 +6,8 @@
   with_items:
     - network-manager-openvpn
     - network-manager-openvpn-gnome
+    - network-manager-vpnc
+    - network-manager-vpnc-gnome
 
 - name: Installing nautilus addons
   apt:
@@ -19,7 +21,3 @@
   with_items:
     - chrome-gnome-shell
     - gnome-tweaks
-#- file: path=/etc/lightdm/lightdm.conf.d state=directory mode=0755
-#
-#- name: Disable Guest Connection
-#  copy: src=50-disable-guest.conf dest=/etc/lightdm/lightdm.conf.d/50-disable-guest.conf mode=0644

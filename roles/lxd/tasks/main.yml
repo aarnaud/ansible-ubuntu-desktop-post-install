@@ -14,6 +14,17 @@
     - lxd-client
     - lxcfs
     - dnsmasq # For custum config in /etc/dnsmasq.d/
+  register: _lxd_installed
+
+- name: "Deploy LXD preseed file"
+  template: src="lxd-preseed.yml" dest="/tmp/lxd-preseed.yml" backup=no
+  when: _lxd_installed|changed
+
+- name: "LXD init"
+  shell: |
+    lxd init --preseed < /tmp/lxd-preseed.yml
+    rm -f /tmp/lxd-preseed.yml
+  when: _lxd_installed|changed
 
 - name: Getting users on system
   shell: "getent passwd | awk -F: '$3 >= 1000 && $3 <= 2000 { print $1 }'"
@@ -22,5 +33,16 @@
 - name: "Add lxd group to users"
   user: name={{item}} groups=lxd append=yes
   with_items: "{{ system_users.stdout_lines }}"
+
+- name: "Add forwarding consul domain to dnsmasq"
+  template: src="consul-dnsmasq.conf" dest="/etc/dnsmasq.d/01-consul" backup=no
+  notify: Restart dnsmasq
+
+- name: "Create systemd/resolved.conf.d directory"
+  file: path=/etc/systemd/resolved.conf.d/ state=directory mode=0755
+
+- name: "Add dnsmasq resolver in systemd-resolved"
+  template: src="systemd-resolved-dnsmasq.conf" dest="/etc/systemd/resolved.conf.d/00-consul-dnsmasq.conf" backup=no
+  notify: Restart systemd-resolved
 
 - set_fact: network_manager_unmanaged_devices="{{network_manager_unmanaged_devices}} + [ 'interface-name:lxdbr0' ]"

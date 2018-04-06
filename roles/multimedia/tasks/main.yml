@@ -19,18 +19,11 @@
     - rawtherapee
     - kazam
     - vlc
+    - gpsbabel
+    - hugin
 
-
-# TODO: use snap for spotify
-#- name: Adding spotify repository key
-#  apt_key: keyserver=keyserver.ubuntu.com id=EFDC8610341D9410
-#  when: gui
-#
-#- name: Adding spotify repository
-#  apt_repository: repo='deb http://repository.spotify.com stable non-free' state=present
-#  when: gui
-#
-#- name: Installing spotify
-#  apt:
-#    name: spotify-client
-#  when: gui
+- name: Installing spotify
+  shell:
+    snap install spotify
+  creates: "/snap/bin/spotify"
+  when: gui

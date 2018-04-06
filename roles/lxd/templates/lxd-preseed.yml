@@ -1,0 +1,32 @@
+# Daemon settings
+config:
+  images.auto_update_interval: "0"
+
+# Storage pools
+storage_pools:
+- name: default
+  driver: btrfs
+  config:
+    source: /var/lib/lxd/storage-pools/default
+
+# Network devices
+networks:
+- name: lxdbr0
+  type: bridge
+  config:
+    ipv4.address: "{{ LXD_IPV4_CIDR }}"
+    ipv4.nat: "true"
+    ipv6.address: none
+
+# Profiles
+profiles:
+- name: default
+  devices:
+    eth0:
+      nictype: bridged
+      parent: lxdbr0
+      type: nic
+    root:
+      path: /
+      pool: default
+      type: disk

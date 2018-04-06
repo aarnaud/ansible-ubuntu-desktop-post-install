@@ -1,15 +1,24 @@
 ---
 
 
-#- stat: path=/usr/bin/jitsi
-#  register: jitsi_stat
-#
-#- name: Downloading jitsi
-#  get_url: url=https://download.jitsi.org/jitsi/debian/jitsi_2.8.5426-1_amd64.deb dest=/tmp/jitsi.deb
-#  when: not jitsi_stat.stat.exists
-#
-#- name: Installing jitsi
-#  apt: deb=/tmp/jitsi.deb
-#  when: not jitsi_stat.stat.exists
+- name: Installing communication apps (gui)
+  apt:
+    name: "{{item}}"
+  when: gui
+  with_items:
+    - evolution
+    - evolution-plugins
+    - evolution-ews
+    - pidgin
 
+- name: Installing skype
+  shell:
+    snap install skype
+  creates: "/snap/bin/skype"
+  when: gui
 
+- name: Installing slack
+  shell:
+    snap install slack
+  creates: "/snap/bin/slack"
+  when: gui
