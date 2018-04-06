@@ -13,7 +13,6 @@
     - lxd
     - lxd-client
     - lxcfs
-    - dnsmasq # For custum config in /etc/dnsmasq.d/
   register: _lxd_installed
 
 - name: "Deploy LXD preseed file"
@@ -33,10 +32,6 @@
 - name: "Add lxd group to users"
   user: name={{item}} groups=lxd append=yes
   with_items: "{{ system_users.stdout_lines }}"
-
-- name: "Add forwarding consul domain to dnsmasq"
-  template: src="consul-dnsmasq.conf" dest="/etc/dnsmasq.d/01-consul" backup=no
-  notify: Restart dnsmasq
 
 - name: "Create systemd/resolved.conf.d directory"
   file: path=/etc/systemd/resolved.conf.d/ state=directory mode=0755
