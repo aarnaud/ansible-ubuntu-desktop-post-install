@@ -5,6 +5,8 @@
   become_user: root
   vars:
     gui: True
+    nodejs_version: "8.x"
+    nodejs_install_npm_user: "anthony"
     shorewall:
       externalPorts:
         - wl+
@@ -33,6 +35,15 @@
         - docker0
       masquerade: True
       wait_interface: ""
+    editors:
+      sublime_text: True
+      atom: True
+      visual_studio_code: True
+      webstorm: True
+      phpstorm: True
+      pycharm: True
+      idea: False
+      idea_ultimate: False
 
   pre_tasks:
     - set_fact: network_manager_unmanaged_devices={{['interface-name:tun*']}}
@@ -54,6 +65,7 @@
     - composer
     - lxd
     - docker
+    - nodejs
     - shorewall
     - shorewall6
 

@@ -1,0 +1,5 @@
+---
+
+- name: nodejs
+  src: https://github.com/geerlingguy/ansible-role-nodejs.git
+  version: "4.1.2"
