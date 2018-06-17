@@ -1,5 +1,17 @@
 ---
 
+- name: Adding Signal repository key
+  apt_key:
+    url: "https://updates.signal.org/desktop/apt/keys.asc"
+    state: present
+  when: gui
+
+- name: Adding Signal repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main"
+    state: present
+    filename: signal-xenial.list
+  when: gui
 
 - name: Installing communication apps (gui)
   apt:
@@ -10,6 +22,7 @@
     - evolution-plugins
     - evolution-ews
     - pidgin
+    - signal-desktop
 
 - name: Installing skype
   shell:
